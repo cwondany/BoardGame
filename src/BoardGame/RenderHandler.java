@@ -1,4 +1,8 @@
+package BoardGame;
 
+
+import BoardGame.model.Rectangle;
+import BoardGame.model.Sprite;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;

@@ -1,9 +1,16 @@
+package BoardGame;
 
+
+import BoardGame.model.Tiles;
+import BoardGame.model.Rectangle;
+import BoardGame.model.SpriteSheet;
+import BoardGame.model.Sprite;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.image.BufferStrategy;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.lang.Runnable;
 import java.lang.Thread;
@@ -21,11 +28,15 @@ public class Game extends JFrame implements Runnable {
     private Canvas canvas = new Canvas();
     private RenderHandler renderer;
     private BufferedImage testImage;
+    
     private Sprite testSprite;
     private SpriteSheet sheet;
     private Rectangle textRectangle = new Rectangle(30, 30, 100, 100);
+    
+    private Tiles tiles;
 
     public Game() {
+        
         //Make our program shutdown when we exit out.
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -46,11 +57,14 @@ public class Game extends JFrame implements Runnable {
 
         renderer = new RenderHandler(getWidth(), getHeight());
         
+        // load Assets
         BufferedImage sheetImage = loadImage("Tiles1.png");
         sheet = new SpriteSheet(sheetImage);
         sheet.loadSprites(16, 16);
-        testImage = loadImage("GrassTile.png");
-        testSprite = sheet.getSprite(4, 1);
+        
+        tiles = new Tiles(new File("src/assets/tiles.txt"), sheet);
+        //testImage = loadImage("GrassTile.png");
+        //testSprite = sheet.getSprite(4, 1);
         //textRectangle.generateGraphics(3, 1234);
     }
 
@@ -63,8 +77,9 @@ public class Game extends JFrame implements Runnable {
         Graphics graphics = bufferStrategy.getDrawGraphics();
         super.paint(graphics);
         
-        renderer.renderSprite(testSprite, 0, 0, 5, 5);
-        renderer.renderRectangle(textRectangle, 1, 1);
+        tiles.renderTile(2, renderer, 0, 0, 3, 3);
+        //renderer.renderSprite(testSprite, 0, 0, 5, 5);
+        //renderer.renderRectangle(textRectangle, 1, 1);
         renderer.render(graphics);
 
         graphics.dispose();

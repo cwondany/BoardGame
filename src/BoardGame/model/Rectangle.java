@@ -1,5 +1,10 @@
-// for camera (userImport), tiles, objects
+package BoardGame.model;
 
+import BoardGame.Game;
+
+/**
+ * For camera (userImport), tiles, objects
+ */
 public class Rectangle {
     // x-/y-Position, width, height
     public int x, y, w, h;
