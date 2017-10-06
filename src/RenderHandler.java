@@ -27,11 +27,14 @@ public class RenderHandler {
         graphics.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
     }
 
+    public void renderSprite(Sprite sprite, int xPosition, int yPosition, int xZoom, int yZoom) {
+        renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(), xPosition, yPosition, xZoom, yZoom);
+    }
     //render image to our array of pixels: yPosition, xPosition of the imagePosition
-                                                   //Parameter: image, x-Posi, y-Posi, Breite, Höhe
-    public void renderImage(BufferedImage image, int xPosition, int yPosition, int xZoom, int yZoom) { 
+    //Parameter: image, x-Posi, y-Posi, Breite, Höhe
+    public void renderImage(BufferedImage image, int xPosition, int yPosition, int xZoom, int yZoom) {
         int[] imagePixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-        
+
         renderArray(imagePixels, image.getWidth(), image.getHeight(), xPosition, yPosition, xZoom, yZoom);
     }
 
@@ -50,7 +53,7 @@ public class RenderHandler {
                 for (int yZoomPosition = 0; yZoomPosition < yZoom; yZoomPosition++) {
                     for (int xZoomPosition = 0; xZoomPosition < xZoom; xZoomPosition++) {
                         setPixel((renderPixels[x + y * renderWidth]),
-                                (x * xZoom) + xPosition + xZoomPosition-3, (y * yZoom) + yPosition + yZoomPosition-3);
+                                (x * xZoom) + xPosition + xZoomPosition - 3, (y * yZoom) + yPosition + yZoomPosition - 3);
                     }
                 }
             }

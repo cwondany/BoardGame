@@ -16,12 +16,14 @@ import java.io.IOException;
 public class Game extends JFrame implements Runnable {
 
     //colorID
-    public static int alpha = 0xFF00DC; 
-    
+    public static int alpha = 0xFFFF00DC;
+
     private Canvas canvas = new Canvas();
     private RenderHandler renderer;
     private BufferedImage testImage;
-    private Rectangle textRectangle = new Rectangle(30,30,100,100);
+    private Sprite testSprite;
+    private SpriteSheet sheet;
+    private Rectangle textRectangle = new Rectangle(30, 30, 100, 100);
 
     public Game() {
         //Make our program shutdown when we exit out.
@@ -43,9 +45,13 @@ public class Game extends JFrame implements Runnable {
         canvas.createBufferStrategy(3);
 
         renderer = new RenderHandler(getWidth(), getHeight());
-
+        
+        BufferedImage sheetImage = loadImage("Tiles1.png");
+        sheet = new SpriteSheet(sheetImage);
+        sheet.loadSprites(16, 16);
         testImage = loadImage("GrassTile.png");
-        textRectangle.generateGraphics(3,1234);
+        testSprite = sheet.getSprite(4, 1);
+        //textRectangle.generateGraphics(3, 1234);
     }
 
     public void update() {
@@ -56,8 +62,8 @@ public class Game extends JFrame implements Runnable {
         BufferStrategy bufferStrategy = canvas.getBufferStrategy();
         Graphics graphics = bufferStrategy.getDrawGraphics();
         super.paint(graphics);
-
-        renderer.renderImage(testImage, 0, 0, 5, 5);
+        
+        renderer.renderSprite(testSprite, 0, 0, 5, 5);
         renderer.renderRectangle(textRectangle, 1, 1);
         renderer.render(graphics);
 
@@ -96,7 +102,6 @@ public class Game extends JFrame implements Runnable {
                 update();
                 changeInSeconds = 0;
             }
-
             render();
             lastTime = now;
         }
