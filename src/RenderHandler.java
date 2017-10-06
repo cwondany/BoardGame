@@ -14,8 +14,8 @@ public class RenderHandler {
         view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         camera = new Rectangle(0, 0, width, height);
-        camera.x = -100;
-        camera.y = -30;
+        camera.x = 0;
+        camera.y = 0;
 
         //Create an array for pixels
         pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
@@ -58,10 +58,11 @@ public class RenderHandler {
     }
 
     private void setPixel(int pixel, int x, int y) {
+        // if pixel is in screen r,t,l,b
         if (x >= camera.x && y >= camera.y && x <= camera.x + camera.w
                 && y <= camera.y + camera.h) {
             int pixelIndex = (x - camera.x) + (y - camera.y) * view.getWidth();
-            if (pixels.length > pixelIndex) {
+            if (pixels.length > pixelIndex && pixel != Game.alpha) {
                 pixels[pixelIndex] = pixel;
             }
         }

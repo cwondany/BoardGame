@@ -15,10 +15,13 @@ import java.io.IOException;
 
 public class Game extends JFrame implements Runnable {
 
+    //colorID
+    public static int alpha = 0xFF00DC; 
+    
     private Canvas canvas = new Canvas();
     private RenderHandler renderer;
     private BufferedImage testImage;
-    private Rectangle textRectangle = new Rectangle(30,90,100,100);
+    private Rectangle textRectangle = new Rectangle(30,30,100,100);
 
     public Game() {
         //Make our program shutdown when we exit out.
