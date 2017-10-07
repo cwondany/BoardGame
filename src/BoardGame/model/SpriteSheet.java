@@ -6,56 +6,54 @@ public class SpriteSheet {
 
     private int[] pixels;
     private BufferedImage image;
-    public final int SIZE_X;
-    public final int SIZE_Y;
-    private int spriteSizeX;
+    public final int SIZEX;
+    public final int SIZEY;
     private Sprite[] loadedSprites = null;
     private boolean spritesLoaded = false;
 
-    public SpriteSheet(BufferedImage sheetImage) {
-        this.image = sheetImage;
-        this.SIZE_X = sheetImage.getWidth();
-        this.SIZE_Y = sheetImage.getHeight();
+    private int spriteSizeX;
 
-        pixels = new int[SIZE_X * SIZE_Y];
-        pixels = sheetImage.getRGB(0, 0, SIZE_X, SIZE_Y, pixels, 0, SIZE_X);
+    public SpriteSheet(BufferedImage sheetImage) {
+        image = sheetImage;
+        SIZEX = sheetImage.getWidth();
+        SIZEY = sheetImage.getHeight();
+
+        pixels = new int[SIZEX * SIZEY];
+        pixels = sheetImage.getRGB(0, 0, SIZEX, SIZEY, pixels, 0, SIZEX);
     }
 
     public void loadSprites(int spriteSizeX, int spriteSizeY) {
         this.spriteSizeX = spriteSizeX;
-        loadedSprites = new Sprite[(SIZE_X / spriteSizeX) * (SIZE_Y / spriteSizeY)];
-        int spriteID = 0;
-        for (int y = 0; y < SIZE_Y; y += spriteSizeX) {
+        loadedSprites = new Sprite[(SIZEX / spriteSizeX) * (SIZEY / spriteSizeY)];
 
-            for (int x = 0; x < SIZE_X; x += spriteSizeY) {
+        int spriteID = 0;
+        for (int y = 0; y < SIZEY; y += spriteSizeY) {
+            for (int x = 0; x < SIZEX; x += spriteSizeX) {
                 loadedSprites[spriteID] = new Sprite(this, x, y, spriteSizeX, spriteSizeY);
                 spriteID++;
             }
         }
+
         spritesLoaded = true;
     }
-    /**
-     * 
-     * @param x-Position in spriteSheet
-     * @param y-Position in spriteSheet
-     * @return Sprite with position (x,y)
-     */
+
     public Sprite getSprite(int x, int y) {
-        if (spritesLoaded) {       //sprite-width
-            int spriteID = x + y * (SIZE_X / spriteSizeX);
+        if (spritesLoaded) {
+            int spriteID = x + y * (SIZEX / spriteSizeX);
 
             if (spriteID < loadedSprites.length) {
                 return loadedSprites[spriteID];
             } else {
-                System.out.println("SpriteID of " + spriteID + " ist out of range with a maximum of " + loadedSprites.length);
+                System.out.println("SpriteID of " + spriteID + " is out of the range with a length of " + loadedSprites.length + ".");
             }
         } else {
-            System.out.println("Spritesheet could not get a sprites with no loades sprites");
+            System.out.println("SpriteSheet could not get a sprite with no loaded sprites.");
         }
+
         return null;
     }
 
-    public int[] getPixel() {
+    public int[] getPixels() {
         return pixels;
     }
 
