@@ -1,5 +1,6 @@
 package BoardGame;
 
+import BoardGame.model.AnimatedSprite;
 import BoardGame.model.KeyBoardListener;
 import BoardGame.model.Map;
 import BoardGame.model.MouseEventListener;
@@ -29,6 +30,7 @@ public class Game extends JFrame implements Runnable {
 
     private Sprite testSprite;
     private SpriteSheet sheet;
+    private SpriteSheet playerSheet;
     private Rectangle textRectangle = new Rectangle(30, 30, 100, 100);
 
     private Tiles tiles;
@@ -36,6 +38,8 @@ public class Game extends JFrame implements Runnable {
 
     private int xZoom = 3;
     private int yZoom = 3;
+    
+    private AnimatedSprite animTest;
 
     private GameObject[] objects;
     private KeyBoardListener keyListener = new KeyBoardListener(this);
@@ -70,17 +74,29 @@ public class Game extends JFrame implements Runnable {
 //        BufferedImage sheetImage = ImageIO.read(url);
         sheet = new SpriteSheet(sheetImage);
         sheet.loadSprites(16, 16);
-
+        
+        BufferedImage playerSheetImage = loadImage ("../assets/Player.png");
+        playerSheet = new SpriteSheet(playerSheetImage);
+        playerSheet.loadSprites(20, 26); //Sprite(width, height)
+        
+        //load Objects
+        objects = new GameObject[2];
+        player = new Player();
+        objects[0] = player;
+        
+        //Testing AnimetesSprite
+        Rectangle[] spritePositions = new Rectangle[8];
+        for (int i = 0; i < spritePositions.length; i++) {
+            spritePositions[i] = new Rectangle(i*20,0,20,26);
+        }
+        animTest = new AnimatedSprite(playerSheet,spritePositions, 8);
+        objects[1] = animTest;
+        
         //load Tiles
         tiles = new Tiles(new File("src/assets/tiles.txt"), sheet);
 
         //load Map
         map = new Map(new File("src/assets/Map.txt"), tiles);
-
-        //load Objects
-        objects = new GameObject[1];
-        player = new Player();
-        objects[0] = player;
 
         // Add Listeners
         canvas.addKeyListener(keyListener);
@@ -107,6 +123,7 @@ public class Game extends JFrame implements Runnable {
         for (int i = 0; i < objects.length; i++) {
             objects[i].render(renderer, 3, 3);
         }
+        renderer.renderSprite(animTest, 30, 30, xZoom, yZoom);
         renderer.render(graphics);
 
         //tiles.renderTile(2, renderer, 0, 0, 3, 3);
