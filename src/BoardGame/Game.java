@@ -1,24 +1,23 @@
 package BoardGame;
 
 
+import BoardGame.model.KeyBoardListener;
+import BoardGame.model.Map;
+import BoardGame.model.MouseEventListener;
+import BoardGame.model.Player;
 import BoardGame.model.Tiles;
 import BoardGame.model.Rectangle;
 import BoardGame.model.SpriteSheet;
 import BoardGame.model.Sprite;
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.image.BufferStrategy;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.lang.Runnable;
-import java.lang.Thread;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.net.URL;
 
 public class Game extends JFrame implements Runnable {
 
@@ -28,15 +27,21 @@ public class Game extends JFrame implements Runnable {
     private Canvas canvas = new Canvas();
     private RenderHandler renderer;
     private BufferedImage testImage;
-    
+
     private Sprite testSprite;
     private SpriteSheet sheet;
     private Rectangle textRectangle = new Rectangle(30, 30, 100, 100);
-    
+
     private Tiles tiles;
+    private Map map;
+
+    private GameObject[] objects;
+    private KeyBoardListener keyListener = new KeyBoardListener();
+    private MouseEventListener mouseListener = new MouseEventListener(this);
+    private Player player;
 
     public Game() {
-        
+
         //Make our program shutdown when we exit out.
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -56,34 +61,56 @@ public class Game extends JFrame implements Runnable {
         canvas.createBufferStrategy(3);
 
         renderer = new RenderHandler(getWidth(), getHeight());
-        
+
         // load Assets
-        BufferedImage sheetImage = loadImage("Tiles1.png");
+        BufferedImage sheetImage = loadImage("../assets/Tiles1.png");
+//        URL url = this.getClass().getResource("../assets/Tiles1.png");
+//        BufferedImage sheetImage = ImageIO.read(url);
         sheet = new SpriteSheet(sheetImage);
         sheet.loadSprites(16, 16);
-        
+
+        //load Tiles
         tiles = new Tiles(new File("src/assets/tiles.txt"), sheet);
+
+        //load Map
+        map = new Map(new File("src/assets/Map.txt"), tiles);
+
+        //load Objects
+        objects = new GameObject[1];
+        player = new Player();
+        objects[0] = player;
+
+        // Add Listeners
+        canvas.addKeyListener(keyListener);
+        canvas.addFocusListener(keyListener);
         //testImage = loadImage("GrassTile.png");
         //testSprite = sheet.getSprite(4, 1);
         //textRectangle.generateGraphics(3, 1234);
     }
 
     public void update() {
-
+        for (int i = 0; i < objects.length; i++) {
+            objects[i].update(this);
+        }
     }
 
     public void render() {
         BufferStrategy bufferStrategy = canvas.getBufferStrategy();
         Graphics graphics = bufferStrategy.getDrawGraphics();
         super.paint(graphics);
-        
-        tiles.renderTile(2, renderer, 0, 0, 3, 3);
-        //renderer.renderSprite(testSprite, 0, 0, 5, 5);
-        //renderer.renderRectangle(textRectangle, 1, 1);
+
+        map.render(renderer, 3, 3);
+        for (int i = 0; i < objects.length; i++) {
+            objects[i].render(renderer, 3, 3);
+        }
         renderer.render(graphics);
 
+        // tiles.renderTile(2, renderer, 0, 0, 3, 3);
+        //renderer.renderSprite(testSprite, 0, 0, 5, 5);
+        //renderer.renderRectangle(textRectangle, 1, 1);
         graphics.dispose();
         bufferStrategy.show();
+        renderer.clear();
     }
 
     private BufferedImage loadImage(String path) {
@@ -127,6 +154,17 @@ public class Game extends JFrame implements Runnable {
         Game game = new Game();
         Thread gameThread = new Thread(game);
         gameThread.start();
+    }
+
+    public KeyBoardListener getKeyListener() {
+        return keyListener;
+    }
+    public MouseEventListener getMouseListener() {
+        return mouseListener;
+    }
+
+    public RenderHandler getRenderer() {
+        return renderer;
     }
 
 }
