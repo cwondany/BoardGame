@@ -36,15 +36,13 @@ public class Game extends JFrame implements Runnable {
     private Tiles tiles;
     private Map map;
 
-    private int xZoom = 3;
-    private int yZoom = 3;
-    
-    private AnimatedSprite animTest;
-
     private GameObject[] objects;
     private KeyBoardListener keyListener = new KeyBoardListener(this);
     private MouseEventListener mouseListener = new MouseEventListener(this);
     private Player player;
+
+    private int xZoom = 3;
+    private int yZoom = 3;
 
     public Game() {
 
@@ -74,24 +72,22 @@ public class Game extends JFrame implements Runnable {
 //        BufferedImage sheetImage = ImageIO.read(url);
         sheet = new SpriteSheet(sheetImage);
         sheet.loadSprites(16, 16);
-        
-        BufferedImage playerSheetImage = loadImage ("../assets/Player.png");
+
+        BufferedImage playerSheetImage = loadImage("../assets/Player.png");
         playerSheet = new SpriteSheet(playerSheetImage);
         playerSheet.loadSprites(20, 26); //Sprite(width, height)
-        
+
+        //Player AnimetesSprite
+        AnimatedSprite playerAnimation = new AnimatedSprite(playerSheet, 5);
+
         //load Objects
-        objects = new GameObject[2];
-        player = new Player();
+        objects = new GameObject[1];
+        player = new Player(playerAnimation);
         objects[0] = player;
-        
+
         //Testing AnimetesSprite
-        Rectangle[] spritePositions = new Rectangle[8];
-        for (int i = 0; i < spritePositions.length; i++) {
-            spritePositions[i] = new Rectangle(i*20,0,20,26);
-        }
-        animTest = new AnimatedSprite(playerSheet,spritePositions, 8);
-        objects[1] = animTest;
-        
+        playerAnimation = new AnimatedSprite(playerSheet, 5);
+
         //load Tiles
         tiles = new Tiles(new File("src/assets/tiles.txt"), sheet);
 
@@ -123,7 +119,6 @@ public class Game extends JFrame implements Runnable {
         for (int i = 0; i < objects.length; i++) {
             objects[i].render(renderer, 3, 3);
         }
-        renderer.renderSprite(animTest, 30, 30, xZoom, yZoom);
         renderer.render(graphics);
 
         //tiles.renderTile(2, renderer, 0, 0, 3, 3);

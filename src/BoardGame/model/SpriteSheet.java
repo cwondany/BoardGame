@@ -37,6 +37,10 @@ public class SpriteSheet {
         spritesLoaded = true;
     }
 
+    public Sprite[] getLoadedSprites() {
+        return loadedSprites;
+    }
+    
     public Sprite getSprite(int x, int y) {
         if (spritesLoaded) {
             int spriteID = x + y * (SIZEX / spriteSizeX);

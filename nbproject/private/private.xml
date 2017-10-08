@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Scarvy/Documents/NetBeansProjects/game_/src/Game.java</file>
-            <file>file:/C:/Users/Scarvy/Documents/NetBeansProjects/game_/src/RenderHandler.java</file>
-            <file>file:/C:/Users/Scarvy/Documents/NetBeansProjects/game_/src/Rectangle.java</file>
+            <file>file:/C:/Users/Scarvy/Documents/NetBeansProjects/BoardGame/src/BoardGame/model/Sprite.java</file>
+            <file>file:/C:/Users/Scarvy/Documents/NetBeansProjects/BoardGame/src/BoardGame/Game.java</file>
+            <file>file:/C:/Users/Scarvy/Documents/NetBeansProjects/BoardGame/src/BoardGame/model/SpriteSheet.java</file>
+            <file>file:/C:/Users/Scarvy/Documents/NetBeansProjects/BoardGame/src/BoardGame/model/AnimatedSprite.java</file>
         </group>
     </open-files>
 </project-private>
